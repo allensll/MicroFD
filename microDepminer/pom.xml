@@ -3,25 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>MicroFD</artifactId>
-        <groupId>com.allensll.test</groupId>
+        <artifactId>algorithms</artifactId>
+        <groupId>com.allensll.algorithms</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.allensll.test.microDepminer</groupId>
-    <artifactId>MicroDepminerModules</artifactId>
+    <groupId>com.allensll.algorithms.microDepminer</groupId>
+    <artifactId>microDepminer</artifactId>
     <packaging>pom</packaging>
 
-    <name>MicroDepminerModules</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
+    <name>microDepminer</name>
     <modules>
-        <module>microDepminer_helper</module>
         <module>microDepminer_algorithm</module>
+        <module>microDepminer_helper</module>
     </modules>
 
 

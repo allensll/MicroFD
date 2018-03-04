@@ -1,0 +1,9 @@
+.git
+.idea
+.DS_Store
+io
+data
+results
+Result*.csv
+*/target/
+*.iml
