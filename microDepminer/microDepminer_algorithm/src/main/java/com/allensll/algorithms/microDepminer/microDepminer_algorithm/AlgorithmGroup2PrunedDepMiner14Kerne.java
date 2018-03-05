@@ -6,7 +6,7 @@ import de.metanome.algorithm_integration.AlgorithmExecutionException;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import com.allensll.algorithms.microDepminer.microDepminer_helper.AlgorithmMetaGroup2;
 
-public class AlgorithmGroup2DepMiner14Kerne extends AlgorithmMetaGroup2 {
+public class AlgorithmGroup2PrunedDepMiner14Kerne extends AlgorithmMetaGroup2 {
 
     @Override
     protected void buildSpecs() {
@@ -28,18 +28,18 @@ public class AlgorithmGroup2DepMiner14Kerne extends AlgorithmMetaGroup2 {
             throw new AlgorithmConfigurationException("No input defined");
         }
 
-        DepMiner dm = new DepMiner(numberOfThreads, this.fdrr);
-        dm.execute(((RelationalInputGenerator) input).generateNewCopy());
+        PrunedDepMiner pdm = new PrunedDepMiner(numberOfThreads, this.fdrr);
+        pdm.execute(((RelationalInputGenerator) input).generateNewCopy());
 
     }
 
     @Override
 	public String getAuthors() {
-		return DepMiner.getAuthorName();
+		return PrunedDepMiner.getAuthorName();
 	}
 
 	@Override
 	public String getDescription() {
-		return DepMiner.getDescriptionText();
+		return PrunedDepMiner.getDescriptionText();
 	}
 }

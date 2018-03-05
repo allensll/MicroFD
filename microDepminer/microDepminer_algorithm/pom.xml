@@ -59,7 +59,7 @@
                     <archive>
                         <manifestEntries>
                             <Algorithm-Bootstrap-Class>
-                                com.allensll.algorithms.microDepminer.microDepminer_algorithm.AlgorithmGroup2DepMiner
+                                com.allensll.algorithms.microDepminer.microDepminer_algorithm.AlgorithmGroup2PrunedDepMiner
                             </Algorithm-Bootstrap-Class>
                         </manifestEntries>
                     </archive>

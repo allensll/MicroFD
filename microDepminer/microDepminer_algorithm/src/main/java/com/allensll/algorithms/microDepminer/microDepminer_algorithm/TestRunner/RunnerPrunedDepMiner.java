@@ -95,7 +95,7 @@ public class RunnerPrunedDepMiner {
 //                MemorySniffingThread mst = new MemorySniffingThread();
 //                mst.start();
 //
-//                AlgorithExecuteThread aet = new AlgorithExecuteThread(new AlgorithmGroup2DepMiner(), csvt);
+//                AlgorithExecuteThread aet = new AlgorithExecuteThread(new AlgorithmGroup2PrunedDepMiner(), csvt);
 //                aet.start();
 //
 //                while (aet.isAlive()) {

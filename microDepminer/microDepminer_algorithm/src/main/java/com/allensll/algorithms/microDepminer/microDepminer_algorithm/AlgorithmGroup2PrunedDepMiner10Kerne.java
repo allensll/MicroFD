@@ -6,7 +6,7 @@ import de.metanome.algorithm_integration.AlgorithmExecutionException;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import com.allensll.algorithms.microDepminer.microDepminer_helper.AlgorithmMetaGroup2;
 
-public class AlgorithmGroup2DepMinerAuto extends AlgorithmMetaGroup2 {
+public class AlgorithmGroup2PrunedDepMiner10Kerne extends AlgorithmMetaGroup2 {
 
     @Override
     protected void buildSpecs() {
@@ -19,7 +19,7 @@ public class AlgorithmGroup2DepMinerAuto extends AlgorithmMetaGroup2 {
     protected void executeAlgorithm() throws AlgorithmConfigurationException, AlgorithmExecutionException {
 
         Object opti = this.configurationRequirements.get(AlgorithmMetaGroup2.USE_OPTIMIZATIONS_TAG);
-        int numberOfThreads = Runtime.getRuntime().availableProcessors();
+        int numberOfThreads = 10;
         if (opti != null && (Boolean) opti) {
             numberOfThreads = Runtime.getRuntime().availableProcessors();
         }
@@ -28,18 +28,18 @@ public class AlgorithmGroup2DepMinerAuto extends AlgorithmMetaGroup2 {
             throw new AlgorithmConfigurationException("No input defined");
         }
 
-        DepMiner dm = new DepMiner(numberOfThreads, this.fdrr);
-        dm.execute(((RelationalInputGenerator) input).generateNewCopy());
+        PrunedDepMiner pdm = new PrunedDepMiner(numberOfThreads, this.fdrr);
+        pdm.execute(((RelationalInputGenerator) input).generateNewCopy());
 
     }
 
     @Override
 	public String getAuthors() {
-		return DepMiner.getAuthorName();
+		return PrunedDepMiner.getAuthorName();
 	}
 
 	@Override
 	public String getDescription() {
-		return DepMiner.getDescriptionText();
+		return PrunedDepMiner.getDescriptionText();
 	}
 }

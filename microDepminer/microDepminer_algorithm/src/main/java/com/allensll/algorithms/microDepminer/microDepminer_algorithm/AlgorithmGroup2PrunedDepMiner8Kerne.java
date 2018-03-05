@@ -1,25 +1,25 @@
 package com.allensll.algorithms.microDepminer.microDepminer_algorithm;
 
+
 import de.metanome.algorithm_integration.AlgorithmConfigurationException;
 import de.metanome.algorithm_integration.AlgorithmExecutionException;
-import de.metanome.algorithm_integration.configuration.ConfigurationRequirementBoolean;
-import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import com.allensll.algorithms.microDepminer.microDepminer_helper.AlgorithmMetaGroup2;
 
-public class AlgorithmGroup2DepMiner extends AlgorithmMetaGroup2 {
+public class AlgorithmGroup2PrunedDepMiner8Kerne extends AlgorithmMetaGroup2 {
 
     @Override
     protected void buildSpecs() {
-        configSpecs.add(new ConfigurationRequirementRelationalInput(AlgorithmMetaGroup2.INPUT_TAG));
-    	configSpecs.add(new ConfigurationRequirementBoolean(AlgorithmMetaGroup2.USE_OPTIMIZATIONS_TAG));
+
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     protected void executeAlgorithm() throws AlgorithmConfigurationException, AlgorithmExecutionException {
 
         Object opti = this.configurationRequirements.get(AlgorithmMetaGroup2.USE_OPTIMIZATIONS_TAG);
-        int numberOfThreads = 1;
+        int numberOfThreads = 8;
         if (opti != null && (Boolean) opti) {
             numberOfThreads = Runtime.getRuntime().availableProcessors();
         }
@@ -28,18 +28,18 @@ public class AlgorithmGroup2DepMiner extends AlgorithmMetaGroup2 {
             throw new AlgorithmConfigurationException("No input defined");
         }
 
-        DepMiner dm = new DepMiner(numberOfThreads, this.fdrr);
-        dm.execute(((RelationalInputGenerator) input).generateNewCopy());
+        PrunedDepMiner pdm = new PrunedDepMiner(numberOfThreads, this.fdrr);
+        pdm.execute(((RelationalInputGenerator) input).generateNewCopy());
 
     }
 
     @Override
 	public String getAuthors() {
-		return DepMiner.getAuthorName();
+		return PrunedDepMiner.getAuthorName();
 	}
 
 	@Override
 	public String getDescription() {
-		return DepMiner.getDescriptionText();
+		return PrunedDepMiner.getDescriptionText();
 	}
 }
