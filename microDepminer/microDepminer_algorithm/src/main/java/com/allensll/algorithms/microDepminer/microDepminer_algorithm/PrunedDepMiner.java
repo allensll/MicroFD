@@ -34,21 +34,41 @@ public class PrunedDepMiner {
 
     public void execute(RelationalInput input) throws AlgorithmExecutionException {
 
+        Long start = System.nanoTime();
+
         StrippedPartitionGenerator spg = new StrippedPartitionGenerator(numberOfThreads);
         List<StrippedPartition> strippedPartitions = spg.execute(input);
+
+        Long end = System.nanoTime();
+        System.out.println((end-start)/1000000000);
+//      ---------------------------------------------------------------------
         int length = input.numberOfColumns();
+
+        start = System.nanoTime();
 
         List<AgreeSet> agreeSets = new AgreeSetGenerator(this.numberOfThreads).execute(strippedPartitions);
 
+        end = System.nanoTime();
+        System.out.println((end-start)/1000000000);
+//      --------------------------------------------------------------------------
+
+        start = System.nanoTime();
+
         List<CMAX_SET> cmaxSets = new Pruned_CMAX_SET_Generator(this.numberOfThreads, agreeSets, length, length-1).execute();
 
-//        System.out.println(cmaxSets.get(0));
+        end = System.nanoTime();
+        System.out.println((end-start)/1000000000);
 
-//        List<CMAX_SET> cmaxSet = new LinkedList<>();
-//        cmaxSet.add(cmaxSets.get(0));
+//      --------------------------------------------------------------------------
 
+        start = System.nanoTime();
 
         Int2ObjectMap<List<OpenBitSet>> lhss = new LeftHandSideGenerator(this.numberOfThreads).execute(cmaxSets, length);
+
+        end = System.nanoTime();
+        System.out.println((end-start)/1000000000);
+
+//      --------------------------------------------------------------------------
 
         new FunctionalDependencyGenerator(fdrr, input.relationName(), input.columnNames(), this.numberOfThreads, lhss).execute();
 

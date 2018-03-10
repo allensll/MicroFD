@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>algorithms</artifactId>
+        <groupId>com.allensll.algorithms</groupId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.allensll.algorithms.microTane</groupId>
+    <artifactId>microTane</artifactId>
+    <packaging>pom</packaging>
+
+    <name>microTane</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>microTane_algorithm</module>
+        <module>microTane_helper</module>
+        <module>microTane_tree_dir_algorithm</module>
+        <module>microTane_tree_end_algorithm</module>
+    </modules>
+
+</project>
