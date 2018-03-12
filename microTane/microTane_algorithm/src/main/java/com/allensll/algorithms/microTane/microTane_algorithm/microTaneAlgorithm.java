@@ -35,7 +35,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
+public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
         RelationalInputParameterAlgorithm,
         StringParameterAlgorithm {
 
@@ -107,8 +107,8 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         // Initialize Level 0
         CombinationHelper chLevel0 = new CombinationHelper();
         OpenBitSet rhsCandidatesLevel0 = new OpenBitSet();
-        rhsCandidatesLevel0.set(1, numberAttributes + 1);
-//        rhsCandidatesLevel0.set(numberAttributes);
+//        rhsCandidatesLevel0.set(1, numberAttributes + 1);
+        rhsCandidatesLevel0.set(numberAttributes);
 
         chLevel0.setRhsCandidates(rhsCandidatesLevel0);
         StrippedPartition spLevel0 = new StrippedPartition(numberTuples);
@@ -126,8 +126,8 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
 
             CombinationHelper chLevel1 = new CombinationHelper();
             OpenBitSet rhsCandidatesLevel1 = new OpenBitSet();
-            rhsCandidatesLevel1.set(1, numberAttributes + 1);
-//            rhsCandidatesLevel0.set(numberAttributes);
+//            rhsCandidatesLevel1.set(1, numberAttributes + 1);
+            rhsCandidatesLevel0.set(numberAttributes);
 
             chLevel1.setRhsCandidates(rhsCandidatesLevel0);
 
@@ -141,6 +141,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         // while loop (main part of TANE)
         int l = 1;
         while (!level1.isEmpty() && l <= numberAttributes) {
+            System.out.println(l);
             // compute dependencies for a level
             computeDependencies();
 
@@ -160,7 +161,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
      * @return A ObjectArrayList with the HashMaps.
      * @throws InputGenerationException
      * @throws InputIterationException
-     * @throws AlgorithmConfigurationException 
+     * @throws AlgorithmConfigurationException
      */
     private ObjectArrayList<Object2ObjectOpenHashMap<Object, LongBigArrayBigList>> loadData() throws InputGenerationException, InputIterationException, AlgorithmConfigurationException {
         RelationalInput input = null;
@@ -346,7 +347,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
      * @param lhs: left-hand-side of the functional dependency
      * @param a:   dependent attribute. Possible values: 1 <= a <= maxAttributeNumber.
      * @throws CouldNotReceiveResultException if the result receiver cannot handle the functional dependency.
-     * @throws ColumnNameMismatchException 
+     * @throws ColumnNameMismatchException
      */
     private void processFunctionalDependency(OpenBitSet lhs, int a)
             throws CouldNotReceiveResultException, ColumnNameMismatchException {
@@ -534,7 +535,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
      * @param X: A OpenBitSet representing the Columns of the determinant.
      * @param a: The number of the dependent column (starting from 1).
      * @throws CouldNotReceiveResultException if the result receiver cannot handle the functional dependency.
-     * @throws ColumnNameMismatchException 
+     * @throws ColumnNameMismatchException
      */
     private void addDependencyToResultReceiver(OpenBitSet X, int a) throws CouldNotReceiveResultException, ColumnNameMismatchException {
         if (this.fdResultReceiver == null) {
@@ -589,13 +590,13 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         return ch;
     }
 
-	@Override
-	public String getAuthors() {
-		return "Jannik Marten, Jan-Peer Rudolph";
-	}
+    @Override
+    public String getAuthors() {
+        return "Jannik Marten, Jan-Peer Rudolph";
+    }
 
-	@Override
-	public String getDescription() {
-		return "Lattice Traversal-based FD discovery";
-	}
+    @Override
+    public String getDescription() {
+        return "Lattice Traversal-based FD discovery";
+    }
 }

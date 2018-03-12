@@ -71,7 +71,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Algorithm-Bootstrap-Class>com.allensll.algorithms.microTane.microTane_algorithm.TaneAlgorithm
+                            <Algorithm-Bootstrap-Class>com.allensll.algorithms.microTane.microTane_algorithm.microTaneAlgorithm
                             </Algorithm-Bootstrap-Class>
                         </manifestEntries>
                     </archive>

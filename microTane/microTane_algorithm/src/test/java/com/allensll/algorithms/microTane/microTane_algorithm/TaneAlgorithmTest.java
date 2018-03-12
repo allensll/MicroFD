@@ -26,6 +26,7 @@ public class TaneAlgorithmTest extends AlgorithmTester {
         // Execute functionality
         this.algo.execute();
 
+//        fixture.getFunctionalDependencyResultReceiver()
         // Check Results
         fixture.verifyFunctionalDependencyResultReceiver();
     }
