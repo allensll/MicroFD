@@ -145,11 +145,14 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
             // compute dependencies for a level
             computeDependencies();
 
+//            System.out.println("finished computeDependencices");
             // prune the search space
             prune();
+//            System.out.println("prune");
 
             // compute the combinations for the next level
             generateNextLevel();
+//            System.out.println("generateNextLevel");
             l++;
         }
     }
@@ -494,10 +497,12 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
         Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper> new_level = new Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper>();
 
         buildPrefixBlocks();
+        System.out.println(prefix_blocks.size());
 
         for (ObjectArrayList<OpenBitSet> prefix_block_list : prefix_blocks.values()) {
 
             // continue only, if the prefix_block contains at least 2 elements
+//            System.out.println(prefix_block_list.size());
             if (prefix_block_list.size() < 2) {
                 continue;
             }

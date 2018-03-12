@@ -141,6 +141,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         // while loop (main part of TANE)
         int l = 1;
         while (!level1.isEmpty() && l <= numberAttributes) {
+            System.out.println(l);
             // compute dependencies for a level
             computeDependencies();
 
@@ -493,6 +494,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper> new_level = new Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper>();
 
         buildPrefixBlocks();
+        System.out.println(prefix_blocks.size());
 
         for (ObjectArrayList<OpenBitSet> prefix_block_list : prefix_blocks.values()) {
 
