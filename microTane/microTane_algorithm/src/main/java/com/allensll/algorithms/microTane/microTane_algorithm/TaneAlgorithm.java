@@ -56,6 +56,8 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
     private Object2ObjectOpenHashMap<OpenBitSet, ObjectArrayList<OpenBitSet>> prefix_blocks = null;
     private LongBigArrayBigList tTable;
 
+    private long count = 0;
+
     @Override
     public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
         ArrayList<ConfigurationRequirement<?>> requiredConfig = new ArrayList<>();
@@ -147,11 +149,13 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
 
             // prune the search space
             prune();
+            System.out.println(level1.size());
 
             // compute the combinations for the next level
             generateNextLevel();
             l++;
         }
+        System.out.println(count);
     }
 
     /**
@@ -494,7 +498,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper> new_level = new Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper>();
 
         buildPrefixBlocks();
-        System.out.println(prefix_blocks.size());
+//        System.out.println(prefix_blocks.size());
 
         for (ObjectArrayList<OpenBitSet> prefix_block_list : prefix_blocks.values()) {
 
@@ -504,6 +508,8 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
             }
 
             ObjectArrayList<OpenBitSet[]> combinations = getListCombinations(prefix_block_list);
+            count += combinations.size();
+
             for (OpenBitSet[] c : combinations) {
                 OpenBitSet X = (OpenBitSet) c[0].clone();
                 X.or(c[1]);

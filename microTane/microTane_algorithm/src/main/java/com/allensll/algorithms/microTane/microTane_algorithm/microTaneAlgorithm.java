@@ -56,6 +56,8 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
     private Object2ObjectOpenHashMap<OpenBitSet, ObjectArrayList<OpenBitSet>> prefix_blocks = null;
     private LongBigArrayBigList tTable;
 
+    private long count = 0;
+
     @Override
     public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
         ArrayList<ConfigurationRequirement<?>> requiredConfig = new ArrayList<>();
@@ -128,6 +130,8 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
             OpenBitSet rhsCandidatesLevel1 = new OpenBitSet();
 //            rhsCandidatesLevel1.set(1, numberAttributes + 1);
             rhsCandidatesLevel0.set(numberAttributes);
+            rhsCandidatesLevel0.set(i);
+
 
             chLevel1.setRhsCandidates(rhsCandidatesLevel0);
 
@@ -148,6 +152,7 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
 //            System.out.println("finished computeDependencices");
             // prune the search space
             prune();
+            System.out.println(level1.size());
 //            System.out.println("prune");
 
             // compute the combinations for the next level
@@ -155,6 +160,7 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
 //            System.out.println("generateNextLevel");
             l++;
         }
+        System.out.println(count);
     }
 
     /**
@@ -497,7 +503,7 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
         Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper> new_level = new Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper>();
 
         buildPrefixBlocks();
-        System.out.println(prefix_blocks.size());
+//        System.out.println(prefix_blocks.size());
 
         for (ObjectArrayList<OpenBitSet> prefix_block_list : prefix_blocks.values()) {
 
@@ -508,6 +514,8 @@ public class microTaneAlgorithm implements FunctionalDependencyAlgorithm,
             }
 
             ObjectArrayList<OpenBitSet[]> combinations = getListCombinations(prefix_block_list);
+            count += combinations.size();
+
             for (OpenBitSet[] c : combinations) {
                 OpenBitSet X = (OpenBitSet) c[0].clone();
                 X.or(c[1]);
