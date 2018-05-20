@@ -111,8 +111,8 @@ public class Benchmarker {
 			executable = new File("tane.jar");
 		} else if (miner.equals("fastfds")) {
 			executable = new File("fastfds.jar");
-		} else if (miner.equals("microDFD_helper")) {
-			executable = new File("microDFD_helper.jar");
+		} else if (miner.equals("microDFD_metanome")) {
+			executable = new File("microDFD_metanome.jar");
 		} 
 		else {
 			System.out.println(String.format("No valid miner:\t%s", miner));

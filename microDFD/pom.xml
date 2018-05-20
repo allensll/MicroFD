@@ -22,7 +22,7 @@
 
     <modules>
         <module>microDFD_algorithm</module>
-        <module>microDFD_helper</module>
+        <module>microDFD_metanome</module>
     </modules>
 
 </project>

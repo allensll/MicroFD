@@ -205,7 +205,7 @@ public class DFDMiner extends Miner implements Runnable {
 		}
 
 		// do this for all RHS
-		for (int currentRHSIndex = 0; currentRHSIndex < this.numberOfColumns; currentRHSIndex++) {
+		for (int currentRHSIndex = this.numberOfColumns-1; currentRHSIndex < this.numberOfColumns; currentRHSIndex++) {
 
 			this.dependencies = new Dependencies(numberOfColumns);
 			this.nonDependencies = new NonDependencies(numberOfColumns);
