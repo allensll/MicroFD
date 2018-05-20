@@ -153,6 +153,8 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
 
             // compute the combinations for the next level
             generateNextLevel();
+            System.out.println("finished gen");
+
             l++;
         }
         System.out.println(count);
@@ -250,12 +252,23 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         // iterate through the combinations of the level
         for (OpenBitSet X : level1.keySet()) {
             if (level1.get(X).isValid()) {
+                // Initial C_plus(X)
+//                OpenBitSet C_plus = (OpenBitSet) X.clone();
+//                OpenBitSet Xclone = (OpenBitSet) X.clone();
+//                for (int A = Xclone.nextSetBit( 0); A >= 0; A = Xclone.nextSetBit(A + 1)) {
+//                    Xclone.clear(A);
+//                    C_plus.intersect(level0.get(Xclone).getRhsCandidates());
+//                    Xclone.set(A);
+//                }
+//                OpenBitSet intersection = C_plus;
+//                Xclone = (OpenBitSet) X.clone();
+
                 // Build the intersection between X and C_plus(X)
                 OpenBitSet C_plus = level1.get(X).getRhsCandidates();
                 OpenBitSet intersection = (OpenBitSet) X.clone();
                 intersection.intersect(C_plus);
 
-                // clone of X for usage in the following loop
+//                 clone of X for usage in the following loop
                 OpenBitSet Xclone = (OpenBitSet) X.clone();
 
                 // iterate through all elements (A) of the intersection
@@ -498,7 +511,7 @@ public class TaneAlgorithm implements FunctionalDependencyAlgorithm,
         Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper> new_level = new Object2ObjectOpenHashMap<OpenBitSet, CombinationHelper>();
 
         buildPrefixBlocks();
-//        System.out.println(prefix_blocks.size());
+        System.out.println("build");
 
         for (ObjectArrayList<OpenBitSet> prefix_block_list : prefix_blocks.values()) {
 
