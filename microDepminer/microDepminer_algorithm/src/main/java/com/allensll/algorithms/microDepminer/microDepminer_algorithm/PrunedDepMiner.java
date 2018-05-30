@@ -40,6 +40,7 @@ public class PrunedDepMiner {
         List<StrippedPartition> strippedPartitions = spg.execute(input);
 
         Long end = System.nanoTime();
+        System.out.print("generatorSP: ");
         System.out.println((end-start)/1000000000);
 //      ---------------------------------------------------------------------
         int length = input.numberOfColumns();
@@ -49,6 +50,7 @@ public class PrunedDepMiner {
         List<AgreeSet> agreeSets = new AgreeSetGenerator(this.numberOfThreads).execute(strippedPartitions);
 
         end = System.nanoTime();
+        System.out.print("generatorAgreeSet: ");
         System.out.println((end-start)/1000000000);
 //      --------------------------------------------------------------------------
 
@@ -57,6 +59,7 @@ public class PrunedDepMiner {
         List<CMAX_SET> cmaxSets = new Pruned_CMAX_SET_Generator(this.numberOfThreads, agreeSets, length, length-1).execute();
 
         end = System.nanoTime();
+        System.out.print("generatorCMAXSet: ");
         System.out.println((end-start)/1000000000);
 
 //      --------------------------------------------------------------------------
@@ -66,6 +69,7 @@ public class PrunedDepMiner {
         Int2ObjectMap<List<OpenBitSet>> lhss = new LeftHandSideGenerator(this.numberOfThreads).execute(cmaxSets, length);
 
         end = System.nanoTime();
+        System.out.print("generatorLeftHand: ");
         System.out.println((end-start)/1000000000);
 
 //      --------------------------------------------------------------------------

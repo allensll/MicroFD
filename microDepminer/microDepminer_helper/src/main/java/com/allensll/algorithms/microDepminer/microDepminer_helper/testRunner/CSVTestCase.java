@@ -15,8 +15,8 @@ import java.util.List;
 
 public class CSVTestCase implements RelationalInput, RelationalInputGenerator, FunctionalDependencyResultReceiver {
 
-    private static String filePath = "D:\\Workspaces\\dirttesMastersemester\\algorithm_group2\\Data\\";
-    private static String defaultFileName = "dbtesmaData.c100000.r10";
+    private static String filePath = "D:\\dataset\\";
+    private static String defaultFileName = "iris.csv";
     private static boolean defaultHasHeader = false;
     private static BufferedWriter bw;
     private BufferedReader br;

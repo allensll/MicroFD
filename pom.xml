@@ -74,6 +74,7 @@
         <module>microDepminer</module>
         <module>microDFD</module>
         <module>microTane</module>
+        <module>microHyFD</module>
     </modules>
 
 
