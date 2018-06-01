@@ -133,16 +133,6 @@ public class Sampler {
 		
 		@Override
 		public int compare(Integer o1, Integer o2) {
-			// Next
-		/*	int value1 = this.sortKeys[o1.intValue()][this.activeKey2];
-			int value2 = this.sortKeys[o2.intValue()][this.activeKey2];
-			return value2 - value1;
-		*/	
-			// Previous
-		/*	int value1 = this.sortKeys[o1.intValue()][this.activeKey1];
-			int value2 = this.sortKeys[o2.intValue()][this.activeKey1];
-			return value2 - value1;
-		*/	
 			// Previous -> Next
 			int value1 = this.sortKeys[o1.intValue()][this.activeKey1];
 			int value2 = this.sortKeys[o2.intValue()][this.activeKey1];
@@ -152,17 +142,6 @@ public class Sampler {
 				value2 = this.sortKeys[o2.intValue()][this.activeKey2];
 			}
 			return value2 - value1;
-			
-			// Next -> Previous
-		/*	int value1 = this.sortKeys[o1.intValue()][this.activeKey2];
-			int value2 = this.sortKeys[o2.intValue()][this.activeKey2];
-			int result = value2 - value1;
-			if (result == 0) {
-				value1 = this.sortKeys[o1.intValue()][this.activeKey1];
-				value2 = this.sortKeys[o2.intValue()][this.activeKey1];
-			}
-			return value2 - value1;
-		*/	
 		}
 		
 		private int increment(int number) {

@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.allensll.algorithms</groupId>
-    <artifactId>algorithms</artifactId>
+    <artifactId>microFD</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <name>algorithms</name>
+    <name>microFD</name>
     <description>The micro functional dependencies algorithms based metanome</description>
 
     <properties>
@@ -75,6 +75,7 @@
         <module>microDFD</module>
         <module>microTane</module>
         <module>microHyFD</module>
+        <module>microTest</module>
     </modules>
 
 
