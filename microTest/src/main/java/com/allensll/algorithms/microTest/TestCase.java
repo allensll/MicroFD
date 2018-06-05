@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CSVTestCase implements RelationalInput, RelationalInputGenerator, FunctionalDependencyResultReceiver {
+public class TestCase implements RelationalInput, RelationalInputGenerator, FunctionalDependencyResultReceiver {
 
     private static String filePath = "D:\\works\\1111\\Metanome-1.1\\backend\\WEB-INF\\classes\\inputData\\";
     private static String defaultFileName = "data1.csv";
@@ -28,19 +28,25 @@ public class CSVTestCase implements RelationalInput, RelationalInputGenerator, F
     private ImmutableList<String> names;
     private String delimiter;
 
+    private List<List<String>> relation;
+    private int numOfColumns;
+    private int numOfTuples;
+    private int indicator;
+    private String relationName;
+
     private List<FunctionalDependency> fds;
 
-    public CSVTestCase() throws IOException {
+    public TestCase() throws IOException {
 
-        this(CSVTestCase.defaultFileName, CSVTestCase.defaultHasHeader);
+        this(TestCase.defaultFileName, TestCase.defaultHasHeader);
     }
 
-    public CSVTestCase(String fileName, boolean hasHeader) throws IOException {
+    public TestCase(String fileName, boolean hasHeader) throws IOException {
 
         this.fileName = fileName;
         this.hasHeader = hasHeader;
 
-        this.br = new BufferedReader(new FileReader(new File(CSVTestCase.filePath + fileName)));
+        this.br = new BufferedReader(new FileReader(new File(TestCase.filePath + fileName)));
         this.nextLine = this.br.readLine();
 
         if (this.nextLine.split(",").length > this.nextLine.split(";").length) {
@@ -55,76 +61,87 @@ public class CSVTestCase implements RelationalInput, RelationalInputGenerator, F
         this.fds = new ArrayList<>();
     }
 
-    public static List<String> getAllFileNames() {
+    public TestCase(FunctionalDependency fd, List<List<String>> relation) {
 
-        File[] fa = new File(CSVTestCase.filePath).listFiles();
+        this.relationName = fd.toString();
+        this.relation = relation;
+        this.indicator = 0;
+        this.numberOfColumns = relation.get(0).size();
+        this.numOfTuples = relation.size();
 
-        List<String> result = new LinkedList<String>();
-        for (File f : fa) {
-
-            if (f.getName().contains(".csv")) {
-                result.add(f.getName());
-            }
-
-        }
-
-        return result;
 
     }
 
-    public static void writeToResultFile(String s) throws IOException {
-
-        bw.write(s);
-        bw.newLine();
-        bw.flush();
-    }
-
-    public static void init() throws IOException {
-
-        CSVTestCase.bw = new BufferedWriter(new FileWriter("Result" + System.currentTimeMillis() + ".csv"));
-        bw.write("file;time;mem");
-        bw.newLine();
-        bw.flush();
-    }
-
-    public void close() throws IOException {
-
-        if (CSVTestCase.bw != null) {
-            CSVTestCase.bw.close();
-        }
-    }
-
-    private void getNames() throws IOException {
-
-        ImmutableList.Builder<String> builder = new ImmutableList.Builder<String>();
-
-        if (this.hasHeader) {
-
-            for (String s : this.nextLine.split(this.delimiter)) {
-                builder.add(s);
-            }
-            this.nextLine = this.br.readLine();
-
-        } else {
-
-            for (int i = 0; i < this.numberOfColumns; i++) {
-
-                builder.add(this.fileName + ":" + i);
-            }
-        }
-        this.names = builder.build();
-
-    }
-
-    private void calcNumbers() {
-
-        this.numberOfColumns = this.nextLine.split(this.delimiter).length;
-    }
+//    public static List<String> getAllFileNames() {
+//
+//        File[] fa = new File(TestCase.filePath).listFiles();
+//
+//        List<String> result = new LinkedList<String>();
+//        for (File f : fa) {
+//
+//            if (f.getName().contains(".csv")) {
+//                result.add(f.getName());
+//            }
+//
+//        }
+//
+//        return result;
+//
+//    }
+//
+//    public static void writeToResultFile(String s) throws IOException {
+//
+//        bw.write(s);
+//        bw.newLine();
+//        bw.flush();
+//    }
+//
+//    public static void init() throws IOException {
+//
+//        TestCase.bw = new BufferedWriter(new FileWriter("Result" + System.currentTimeMillis() + ".csv"));
+//        bw.write("file;time;mem");
+//        bw.newLine();
+//        bw.flush();
+//    }
+//
+//    public void close() throws IOException {
+//
+//        if (TestCase.bw != null) {
+//            TestCase.bw.close();
+//        }
+//    }
+//
+//    private void getNames() throws IOException {
+//
+//        ImmutableList.Builder<String> builder = new ImmutableList.Builder<String>();
+//
+//        if (this.hasHeader) {
+//
+//            for (String s : this.nextLine.split(this.delimiter)) {
+//                builder.add(s);
+//            }
+//            this.nextLine = this.br.readLine();
+//
+//        } else {
+//
+//            for (int i = 0; i < this.numberOfColumns; i++) {
+//
+//                builder.add(this.fileName + ":" + i);
+//            }
+//        }
+//        this.names = builder.build();
+//
+//    }
+//
+//    private void calcNumbers() {
+//
+//        this.numberOfColumns = this.nextLine.split(this.delimiter).length;
+//    }
 
     @Override
     public ImmutableList<String> columnNames() {
 
-        return this.names;
+        return null;
     }
 
     @Override
@@ -179,7 +196,7 @@ public class CSVTestCase implements RelationalInput, RelationalInputGenerator, F
     @Override
     public String relationName() {
 
-        return this.fileName;
+        return this.relationName;
     }
 
     @Override
@@ -191,8 +208,8 @@ public class CSVTestCase implements RelationalInput, RelationalInputGenerator, F
     @Override
     public void receiveResult(FunctionalDependency fd) throws CouldNotReceiveResultException {
 
-         System.out.println(fd.getDeterminant() + "-->" + fd.getDependant());
-         this.fds.add(fd);
+        System.out.println(fd.getDeterminant() + "-->" + fd.getDependant());
+        this.fds.add(fd);
     }
 
     @Override
@@ -204,4 +221,3 @@ public class CSVTestCase implements RelationalInput, RelationalInputGenerator, F
         return this.fds;
     }
 }
-

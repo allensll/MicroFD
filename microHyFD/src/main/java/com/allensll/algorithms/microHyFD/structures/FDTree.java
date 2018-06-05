@@ -424,7 +424,7 @@ public class FDTree extends FDTreeElement {
 			if (!plis.get(rhs).isConstant(numRecords)) // Is {} -> rhs an invalid FD
 				this.markFd(rhs);
 	}
-	
+	{
 /*	public void validateFDsFdWise(List<PositionListIndex> plis, Int2ObjectMap<Int2ObjectMap<PositionListIndex>> intersectedPlis, int[][] invertedPlis, int numRecords) {
 		List<FDTreeElementLhsPair> currentLevel = new ArrayList<>();
 		
@@ -704,7 +704,7 @@ System.out.print("(G); ");
 		// Proceed the aggressive lookup
 		return this.lookupAggressively(extendedLhs, rhs, extendedPli, plis);
 	}
-*/	
+*/	}
 	
 	public List<FunctionalDependency> getFunctionalDependencies(ObjectArrayList<ColumnIdentifier> columnIdentifiers, List<PositionListIndex> plis) {
 		List<FunctionalDependency> functionalDependencies = new ArrayList<FunctionalDependency>();

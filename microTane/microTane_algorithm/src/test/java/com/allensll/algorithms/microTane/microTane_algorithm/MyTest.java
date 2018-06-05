@@ -15,7 +15,7 @@ public class MyTest {
     public void setUp() throws Exception {
         this.algo = new microTaneAlgorithm();
         this.algo2 = new TaneAlgorithm();
-        this.csvt = new CSVTestCase("data2.csv",false);
+        this.csvt = new CSVTestCase("data1.csv",false);
     }
 
     @After

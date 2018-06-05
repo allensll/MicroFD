@@ -22,6 +22,11 @@
             <groupId>de.metanome</groupId>
             <artifactId>algorithm_integration</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.allensll.algorithms.microHyFD</groupId>
+            <artifactId>microHyFD</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 

@@ -49,7 +49,7 @@ public class HyFD implements FunctionalDependencyAlgorithm, BooleanParameterAlgo
 	private ValueComparator valueComparator;
 	private final MemoryGuardian memoryGuardian = new MemoryGuardian(true);
 	
-	private boolean validateParallel = true;	// The validation is the most costly part in HyFD and it can easily be parallelized
+	private boolean validateParallel = false;	// The validation is the most costly part in HyFD and it can easily be parallelized
 	private int maxLhsSize = -1;				// The lhss can become numAttributes - 1 large, but usually we are only interested in FDs with lhs < some threshold (otherwise they would not be useful for normalization, key discovery etc.)
 	private int inputRowLimit = -1;				// Maximum number of rows to be read from for analysis; values smaller or equal 0 will cause the algorithm to read all rows
 	
