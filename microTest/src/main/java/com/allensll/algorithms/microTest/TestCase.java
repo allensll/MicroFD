@@ -1,6 +1,7 @@
 package com.allensll.algorithms.microTest;
 
 import com.google.common.collect.ImmutableList;
+import de.metanome.algorithm_integration.ColumnIdentifier;
 import de.metanome.algorithm_integration.input.InputGenerationException;
 import de.metanome.algorithm_integration.input.InputIterationException;
 import de.metanome.algorithm_integration.input.RelationalInput;
@@ -16,17 +17,12 @@ import java.util.List;
 
 public class TestCase implements RelationalInput, RelationalInputGenerator, FunctionalDependencyResultReceiver {
 
-    private static String filePath = "D:\\works\\1111\\Metanome-1.1\\backend\\WEB-INF\\classes\\inputData\\";
-    private static String defaultFileName = "data1.csv";
-    private static boolean defaultHasHeader = false;
-    private static BufferedWriter bw;
-    private BufferedReader br;
-    private boolean hasHeader;
+    private static String filePath = "D:\\dataset\\0606\\result\\";
+    private String resultFileName = "result.csv";
+    private BufferedWriter bw;
     private String fileName;
-    private String nextLine;
+    private List<String> names;
     private int numberOfColumns;
-    private ImmutableList<String> names;
-    private String delimiter;
 
     private List<List<String>> relation;
     private int numOfColumns;
@@ -36,155 +32,63 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
 
     private List<FunctionalDependency> fds;
 
-    public TestCase() throws IOException {
+    public TestCase(FunctionalDependency fd, List<List<String>> relation, String resultfile) {
 
-        this(TestCase.defaultFileName, TestCase.defaultHasHeader);
-    }
-
-    public TestCase(String fileName, boolean hasHeader) throws IOException {
-
-        this.fileName = fileName;
-        this.hasHeader = hasHeader;
-
-        this.br = new BufferedReader(new FileReader(new File(TestCase.filePath + fileName)));
-        this.nextLine = this.br.readLine();
-
-        if (this.nextLine.split(",").length > this.nextLine.split(";").length) {
-            this.delimiter = ",";
-        } else {
-            this.delimiter = ";";
-        }
-
-        this.calcNumbers();
-        this.getNames();
-
-        this.fds = new ArrayList<>();
-    }
-
-    public TestCase(FunctionalDependency fd, List<List<String>> relation) {
-
-        this.relationName = fd.toString();
         this.relation = relation;
         this.indicator = 0;
         this.numberOfColumns = relation.get(0).size();
         this.numOfTuples = relation.size();
+        this.resultFileName = resultfile;
+        this.fds = new ArrayList<>();
 
+        List<String> names = new ArrayList<>(this.numberOfColumns);
+        for (int i=0; i<this.numberOfColumns; i++) {
+            names.add("m"+String.valueOf(i+1));
+        }
+        this.names = names;
+
+        setRelationName(fd);
+    }
+
+    public void close() {
 
     }
 
-//    public static List<String> getAllFileNames() {
-//
-//        File[] fa = new File(TestCase.filePath).listFiles();
-//
-//        List<String> result = new LinkedList<String>();
-//        for (File f : fa) {
-//
-//            if (f.getName().contains(".csv")) {
-//                result.add(f.getName());
-//            }
-//
-//        }
-//
-//        return result;
-//
-//    }
-//
-//    public static void writeToResultFile(String s) throws IOException {
-//
-//        bw.write(s);
-//        bw.newLine();
-//        bw.flush();
-//    }
-//
-//    public static void init() throws IOException {
-//
-//        TestCase.bw = new BufferedWriter(new FileWriter("Result" + System.currentTimeMillis() + ".csv"));
-//        bw.write("file;time;mem");
-//        bw.newLine();
-//        bw.flush();
-//    }
-//
-//    public void close() throws IOException {
-//
-//        if (TestCase.bw != null) {
-//            TestCase.bw.close();
-//        }
-//    }
-//
-//    private void getNames() throws IOException {
-//
-//        ImmutableList.Builder<String> builder = new ImmutableList.Builder<String>();
-//
-//        if (this.hasHeader) {
-//
-//            for (String s : this.nextLine.split(this.delimiter)) {
-//                builder.add(s);
-//            }
-//            this.nextLine = this.br.readLine();
-//
-//        } else {
-//
-//            for (int i = 0; i < this.numberOfColumns; i++) {
-//
-//                builder.add(this.fileName + ":" + i);
-//            }
-//        }
-//        this.names = builder.build();
-//
-//    }
-//
-//    private void calcNumbers() {
-//
-//        this.numberOfColumns = this.nextLine.split(this.delimiter).length;
-//    }
+    public void setRelationName(FunctionalDependency fd) {
+
+        Object[] lhs = fd.getDeterminant().getColumnIdentifiers().toArray();
+        String relationName = "";
+        for (Object o : lhs) {
+            relationName += ((ColumnIdentifier)o).getColumnIdentifier();
+            relationName += "+";
+        }
+        relationName += "--" + fd.getDependant().getColumnIdentifier();
+        this.relationName = relationName;
+    }
+
 
     @Override
-    public ImmutableList<String> columnNames() {
+    public List<String> columnNames() {
 
-        return null;
+        return this.names;
     }
 
     @Override
     public boolean hasNext() throws InputIterationException {
 
-        return (this.nextLine != null);
+        return this.indicator < this.numberOfColumns;
     }
 
     @Override
-    public ImmutableList<String> next() throws InputIterationException {
+    public List<String> next() throws InputIterationException {
 
         if (this.hasNext()) {
-            ImmutableList<String> result = this.getList(this.nextLine);
-            try {
-                this.nextLine = this.br.readLine();
-            } catch (IOException e) {
-                this.nextLine = null;
-            }
+            List<String> result = this.relation.get(this.indicator);
+            this.indicator++;
             return result;
         } else {
-            throw new InputIterationException("nix mehr da");
+            throw new InputIterationException("in the end");
         }
-    }
-
-    private ImmutableList<String> getList(String nextLine2) {
-
-        String[] splitted = this.nextLine.split(",");
-
-        ImmutableList.Builder<String> builder = new ImmutableList.Builder<String>();
-
-        for (String aSplitted : splitted) {
-
-            String t = aSplitted;
-            if (t == "") {
-                t = null;
-            } else {
-                t = t.replaceAll("\"", "");
-            }
-
-            builder.add(t);
-        }
-
-        return builder.build();
     }
 
     @Override
@@ -209,7 +113,9 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
     public void receiveResult(FunctionalDependency fd) throws CouldNotReceiveResultException {
 
         System.out.println(fd.getDeterminant() + "-->" + fd.getDependant());
-        this.fds.add(fd);
+        if (fd.getDependant().getColumnIdentifier().equals("m"+String.valueOf(this.numberOfColumns))) {
+            this.fds.add(fd);
+        }
     }
 
     @Override
@@ -217,7 +123,21 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
         return new Boolean(true);
     }
 
-    public List<FunctionalDependency> getFds(){
-        return this.fds;
+    public boolean saveResult() {
+        try {
+            this.bw = new BufferedWriter(new FileWriter(new File(TestCase.filePath + resultFileName)));
+            // TODO: save result to file
+
+            this.bw.close();
+        } catch (IOException e) {
+            System.out.print("save error");
+            return false;
+        }
+        return true;
+    }
+
+    public double countEntropy(FunctionalDependency fd) {
+        // TODO: count entropy
+        return 0.0;
     }
 }
