@@ -9,11 +9,10 @@ import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.CouldNotReceiveResultException;
 import de.metanome.algorithm_integration.result_receiver.FunctionalDependencyResultReceiver;
 import de.metanome.algorithm_integration.results.FunctionalDependency;
+import sun.tracing.dtrace.DTraceProviderFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TestCase implements RelationalInput, RelationalInputGenerator, FunctionalDependencyResultReceiver {
 
@@ -31,6 +30,7 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
     private String relationName;
 
     private List<FunctionalDependency> fds;
+    private List<FunctionalDependencyWithEntropy2> fdes;
 
     public TestCase(FunctionalDependency fd, List<List<String>> relation, String resultfile) {
 
@@ -48,6 +48,7 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
         this.names = names;
 
         setRelationName(fd);
+        this.resultFileName = this.relationName + ".csv";
     }
 
     public void close() {
@@ -124,10 +125,17 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
     }
 
     public boolean saveResult() {
+        setFdes();
         try {
             this.bw = new BufferedWriter(new FileWriter(new File(TestCase.filePath + resultFileName)));
             // TODO: save result to file
 
+            for (FunctionalDependencyWithEntropy2 fde : this.fdes) {
+                String fdeString = fde.toString();
+                this.bw.write(fdeString, 0, fdeString.length());
+                this.bw.newLine();
+            }
+            this.bw.flush();
             this.bw.close();
         } catch (IOException e) {
             System.out.print("save error");
@@ -136,8 +144,51 @@ public class TestCase implements RelationalInput, RelationalInputGenerator, Func
         return true;
     }
 
+    public void setFdes() {
+
+        this.fdes = new ArrayList<>();
+        for(int i=0; i<fds.size(); i++) {
+            FunctionalDependency fd = this.fds.get(i);
+            double e = countEntropy(fd);
+            FunctionalDependencyWithEntropy2 fde = new FunctionalDependencyWithEntropy2(fd, e);
+            this.fdes.add(fde);
+        }
+        Collections.sort(this.fdes);
+    }
+
     public double countEntropy(FunctionalDependency fd) {
         // TODO: count entropy
-        return 0.0;
+        Set<ColumnIdentifier> Lhs = fd.getDeterminant().getColumnIdentifiers();
+        int rhs = Integer.parseInt(fd.getDependant().getColumnIdentifier().replace("m", ""))-1;
+        int[] lhs = new int[Lhs.size()];
+        int idx = 0;
+        for (ColumnIdentifier name : Lhs) {
+            lhs[idx] = Integer.parseInt(name.getColumnIdentifier().replace("m", ""))-1;
+            idx++;
+        }
+        Map<String, Integer> pli = new HashMap<>();
+        for (List<String> record : this.relation) {
+            String value = null;
+            for  (int i=0; i<lhs.length; i++) {
+                value += record.get(lhs[i]);
+            }
+            if (pli.containsKey(value)) {
+                pli.put(value, pli.get(value)+1);
+            } else {
+                pli.put(value, 1);
+            }
+        }
+        int sum = 0;
+        for (int n : pli.values()) {
+            sum += n;
+        }
+        assert (this.numOfTuples == sum);
+
+        double entropy = 0.0;
+        for (int n : pli.values()) {
+            double p = (double) n / this.numOfTuples;
+            entropy -= p * Math.log(p) / Math.log((double)2);
+        }
+        return entropy;
     }
 }

@@ -30,8 +30,8 @@ public class mFD {
             this.algo.setRelationalInputConfigurationValue(HyFD.Identifier.INPUT_GENERATOR.name(), tc);
             this.algo.setResultReceiver(tc);
             this.algo.execute();
+            tc.saveResult();
         }
-        System.out.println("asdasd");
 //        Long s = System.nanoTime();
 //
 //        Long e = System.nanoTime();
